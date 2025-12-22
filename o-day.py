@@ -4,12 +4,17 @@ import os
 from datetime import datetime
 
 # --- Configuration ---
+# --- Configuration ---
 FILE_NAME = "open_day_signups.csv"
-LOGO_PATH = r"C:\Users\jdvan\OneDrive - UWA\Documents\python play\o-day photos\UWAStudentChapterLogo.png"
 
-# Side Images (GIFs)
-SIDE_IMG_LEFT = r"C:\Users\jdvan\OneDrive - UWA\Documents\python play\o-day photos\guy-mining-diamonds-but-actually-just-dirt.gif"
-SIDE_IMG_RIGHT = r"C:\Users\jdvan\OneDrive - UWA\Documents\python play\o-day photos\zoolander-miner-walk-zoolander.gif"
+# OLD WAY (Will Crash Online):
+# LOGO_PATH = r"C:\Users\jdvan\OneDrive...\UWAStudentChapterLogo.png"
+
+# NEW WAY (Works Online):
+# Ensure the files are uploaded to the main folder of your GitHub repo
+LOGO_PATH = "UWAStudentChapterLogo.png"
+SIDE_IMG_LEFT = "guy-mining-diamonds-but-actually-just-dirt.gif"
+SIDE_IMG_RIGHT = "zoolander-miner-walk-zoolander.gif"
 
 DEGREE_OPTIONS = [
     "Chemical Engineering",
@@ -189,5 +194,6 @@ with col_form_center:
                     df_new.to_csv(FILE_NAME, index=False)
                 else:
                     df_new.to_csv(FILE_NAME, mode='a', header=False, index=False)
+
 
                 st.success(f"Success! {name} added.")
