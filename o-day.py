@@ -21,110 +21,122 @@ DEGREE_OPTIONS = [
     "Other"
 ]
 
-# --- Page Setup & Styling ---
+# --- Page Setup ---
 st.set_page_config(page_title="UWA Mining Club", page_icon="⛏️", layout="wide")
 
+# --- THE "PRESTIGE" CSS SUITE ---
 st.markdown("""
     <style>
-    /* --- SOPHISTICATED ROYAL BLUE BACKGROUND --- */
+    /* 1. BACKGROUND: Deep, expensive Navy Gradient */
     .stApp {
-        background: linear-gradient(180deg, #0f204b 0%, #000c24 100%);
+        background: radial-gradient(circle at 50% 10%, #1a2a4f 0%, #0b1426 60%, #000000 100%);
         background-attachment: fixed;
     }
+
+    /* 2. TYPOGRAPHY: Clean, Modern, "Tech" Sans-Serif */
+    * {
+        font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif !important;
+    }
     
-    /* Global Text Styles */
-    h1, h2, h3, h4, h5, h6, .stRadio label, div.stMarkdown, p {
+    h1, h2, h3 {
         color: #ffffff !important;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    
+    p, label, .stMarkdown {
+        color: #e0e0e0 !important;
+        letter-spacing: 0.3px;
     }
 
-    /* --- 🚫 THE FOOTER KILLER (Hide "Made with Streamlit") 🚫 --- */
-    
-    /* 1. Target the main footer container */
-    footer {
-        visibility: hidden !important;
-        display: none !important;
-        height: 0px !important;
-        margin: 0px !important;
-        padding: 0px !important;
-    }
-    
-    /* 2. Target the footer by its test ID (Streamlit's internal name) */
-    [data-testid="stFooter"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 3. Hide the 'Viewer Badge' (Bottom right user profile/menu) */
-    .viewerBadge_container__1QSob {
-        display: none !important;
-    }
-    
-    /* 4. Hide the top decoration ribbon (The colored line at the top) */
-    [data-testid="stDecoration"] {
-        display: none !important;
+    /* 3. GLASSMORPHISM FORM CONTAINER */
+    /* This targets the form block to look like frosted glass */
+    [data-testid="stForm"] {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 
-    /* 5. Hide the Hamburger Menu & Top Header */
-    [data-testid="stHeader"] {
-        display: none !important;
-    }
-    #MainMenu {
-        visibility: hidden !important;
-    }
-
-    /* --- HIDE IMAGE ICONS (Arrows & Fullscreen) --- */
-    [data-testid="stImage"] button {
-        display: none !important;
-    }
-    button[title="View fullscreen"] {
-        display: none !important;
-    }
-    [data-testid="StyledFullScreenButton"] {
-        display: none !important;
-    }
-
-    /* --- FORM STYLING --- */
-    .stTextInput input {
-        color: #000000;
-        background-color: #f0f2f6;
-        border-radius: 5px;
-        border: 1px solid #d1d5db;
-    }
-    .stRadio label { font-size: 1rem; }
-    
-    /* Submit Button - Gold Accent */
-    .stButton > button {
-        background-color: #C5A059;
-        color: #000000;
-        border-radius: 5px;
-        height: 3em;
-        width: 100%;
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin-top: 15px;
-        border: none;
+    /* 4. PREMIUM INPUT FIELDS */
+    .stTextInput input, .stTextInput input:focus {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
+    
+    /* Glow effect when user clicks an input */
+    .stTextInput input:focus {
+        border-color: #C5A059 !important;
+        box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+    }
+
+    /* 5. GOLD GRADIENT BUTTON */
+    .stButton > button {
+        background: linear-gradient(135deg, #C5A059 0%, #9A7B3E 100%) !important;
+        color: #000000 !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        padding: 0.6rem 2rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    
     .stButton > button:hover {
-        background-color: #E6B86A;
         transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(0,0,0,0.3);
-        color: #000000;
+        box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+        color: #000000 !important;
+    }
+
+    /* 6. RADIO BUTTONS */
+    .stRadio label {
+        background: transparent;
+        padding: 5px;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    .stRadio label:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    /* 7. IMAGE STYLING */
+    img {
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* --- NUCLEAR CLEANUP (Hiding Elements) --- */
+    footer, header, [data-testid="stHeader"], .stAppDeployButton, 
+    .viewerBadge_container__1QSob, [data-testid="stDecoration"], 
+    [data-testid="stHeaderAction"], [data-testid="stImage"] button,
+    button[title="View fullscreen"], #MainMenu {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
-    /* --- LAYOUT ADJUSTMENTS --- */
+    /* Fix spacing at top since header is gone */
     .block-container {
-        padding-top: 50px !important; 
-        padding-bottom: 2rem;
+        padding-top: 2rem !important;
+        padding-bottom: 4rem;
+        max-width: 1200px;
     }
-    .stVerticalBlock { gap: 0rem !important; }
-    
     </style>
     """, unsafe_allow_html=True)
 
-# --- Google Sheets Connection Function ---
+# --- Logic ---
 def add_to_google_sheets(data_row):
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -135,91 +147,95 @@ def add_to_google_sheets(data_row):
         sheet.append_row(data_row)
         return True
     except Exception as e:
-        st.error(f"Google Sheets Error: {e}")
+        st.error(f"System Error: {e}")
         return False
 
-# --- Header Section ---
-col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
+# --- LAYOUT ARCHITECTURE ---
 
-with col_head1:
+# 1. Hero Section (Logo & Title Centered)
+c1, c2, c3 = st.columns([1, 2, 1])
+
+with c2:
     try:
-        st.image(LOGO_PATH, width=600) 
-    except Exception:
-        st.write("⛏️")
-
-with col_head2:
+        # Centering the logo using columns padding
+        st.image(LOGO_PATH, use_container_width=True)
+    except:
+        pass
+    
     st.markdown("""
-        <div style="text-align: left;">
-            <h1 style="font-size: 3.5rem; margin-bottom: 0px; line-height: 1.1; font-weight: 700;">
-                Unearth Your <span style="color: #C5A059;">Future.</span>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 10px; background: linear-gradient(to right, #ffffff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Unearth Your <span style="background: linear-gradient(to right, #FFD700, #C5A059); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Future</span>
             </h1>
-            <h3 style="font-size: 1.8rem; font-weight: 300; color: #E0E0E0; margin-top: 5px; letter-spacing: 1px;">
-                Join the UWA Mining Club
-            </h3>
+            <p style="font-size: 1.2rem; opacity: 0.8; font-weight: 300;">
+                The Official Student Chapter of UWA Mining
+            </p>
         </div>
     """, unsafe_allow_html=True)
 
-# --- Main Form Layout ---
-col_side_l, col_form_center, col_side_r = st.columns([1, 2.5, 1], gap="medium")
+# 2. The "Glass" Content Area
+# We use a 1-2-1 ratio to keep the form readable in the middle, framed by the GIFs
+col_left, col_center, col_right = st.columns([1, 2, 1], gap="large")
 
-with col_side_l:
-    st.image(SIDE_IMG_LEFT, width="stretch")
+with col_left:
+    st.image(SIDE_IMG_LEFT, use_container_width=True)
 
-with col_side_r:
-    st.image(SIDE_IMG_RIGHT, width="stretch")
+with col_right:
+    st.image(SIDE_IMG_RIGHT, use_container_width=True)
 
-with col_form_center:
+with col_center:
+    # THE FORM CARD
     with st.form("signup_form", clear_on_submit=True):
-        c1, c2 = st.columns(2, gap="small")
+        st.markdown("<h3 style='text-align: center; margin-bottom: 25px;'>Member Application</h3>", unsafe_allow_html=True)
         
-        with c1:
-            st.subheader("Details")
-            name = st.text_input("Full Name")
-            student_number = st.text_input("Student Number (8 digits)")
-            facebook = st.text_input("Facebook Handle")
+        # Details Section
+        st.markdown("##### 👤 Personal Details")
+        name = st.text_input("Full Name", placeholder="e.g. Jane Doe")
+        student_number = st.text_input("Student Number", placeholder="8 digits")
+        facebook = st.text_input("Facebook Handle", placeholder="For group chats & event invites")
+        
+        st.markdown("---")
+        
+        # Degree Section
+        st.markdown("##### 🎓 Academic Profile")
+        degree_selection = st.radio(
+            "Select Degree", 
+            DEGREE_OPTIONS, 
+            label_visibility="collapsed"
+        )
+        other_degree_input = st.text_input("Other Degree (if applicable)", placeholder="Specify degree...")
 
-        with c2:
-            st.subheader("Degree")
-            degree_selection = st.radio(
-                "Select Degree:", 
-                DEGREE_OPTIONS, 
-                label_visibility="collapsed"
-            )
-            other_degree_input = st.text_input("If 'Other', specify here:")
-
-        submitted = st.form_submit_button("Submit Application ➤")
+        # Spacer
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # The Premium Button
+        submitted = st.form_submit_button("COMPLETE REGISTRATION")
 
         if submitted:
-            # --- Validation ---
-            has_error = False
-            if not name.strip():
-                st.error("⚠️ Missing Full Name.")
-                has_error = True
+            # Validation Logic
+            errors = []
+            if not name.strip(): errors.append("Name is required.")
+            if not student_number.strip() or not student_number.isdigit() or len(student_number.strip()) != 8:
+                errors.append("Valid 8-digit Student Number required.")
+            if not facebook.strip(): errors.append("Facebook handle is required.")
             
-            clean_s_num = student_number.strip()
-            if len(clean_s_num) != 8 or not clean_s_num.isdigit():
-                st.error("⚠️ Student Number must be 8 digits.")
-                has_error = True
-
-            if not facebook.strip():
-                st.error("⚠️ Missing Facebook handle.")
-                has_error = True
-                
             final_degree = degree_selection
             if degree_selection == "Other":
                 if not other_degree_input.strip():
-                    st.error("⚠️ Please specify the 'Other' degree.")
-                    has_error = True
+                    errors.append("Please specify your degree.")
                 else:
                     final_degree = other_degree_input
 
-            # --- Save to Google Sheets ---
-            if not has_error:
+            if errors:
+                for e in errors:
+                    st.error(f"⚠️ {e}")
+            else:
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                row_data = [name, clean_s_num, facebook, final_degree, timestamp]
+                row_data = [name, student_number.strip(), facebook, final_degree, timestamp]
                 
-                with st.spinner("Saving to cloud..."):
+                with st.spinner("Processing Application..."):
                     success = add_to_google_sheets(row_data)
                     
                 if success:
-                    st.success(f"Success! {name} has been added to the database.")
+                    st.balloons()
+                    st.success(f"Welcome aboard, {name}. Your application is confirmed.")
