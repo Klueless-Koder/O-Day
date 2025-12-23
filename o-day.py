@@ -5,7 +5,7 @@ from google.oauth2.service_account import Credentials # <--- Updated Import
 from datetime import datetime
 
 # --- Configuration ---
-SHEET_NAME = "Mining Club Signups" 
+SHEET_NAME = "O-Day" 
 LOGO_PATH = "UWAStudentChapterLogo.png"
 SIDE_IMG_LEFT = "guy-mining-diamonds-but-actually-just-dirt.gif"
 SIDE_IMG_RIGHT = "zoolander-miner-walk-zoolander.gif"
@@ -255,3 +255,4 @@ with col_center:
                 if success:
                     st.balloons()
                     st.success(f"Welcome aboard, {name}. Your application is confirmed.")
+
