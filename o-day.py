@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials # <--- Updated Import
 from datetime import datetime
 
 # --- Configuration ---
@@ -50,7 +50,6 @@ st.markdown("""
     }
 
     /* 3. GLASSMORPHISM FORM CONTAINER */
-    /* This targets the form block to look like frosted glass */
     [data-testid="stForm"] {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(12px);
@@ -70,8 +69,6 @@ st.markdown("""
         padding: 10px 15px !important;
         transition: all 0.3s ease;
     }
-    
-    /* Glow effect when user clicks an input */
     .stTextInput input:focus {
         border-color: #C5A059 !important;
         box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
@@ -90,7 +87,6 @@ st.markdown("""
         letter-spacing: 1px;
         transition: transform 0.2s, box-shadow 0.2s !important;
     }
-    
     .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
@@ -127,7 +123,6 @@ st.markdown("""
         pointer-events: none !important;
     }
     
-    /* Fix spacing at top since header is gone */
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 4rem;
@@ -136,17 +131,37 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- Logic ---
+# --- Logic: Updated for Modern Google Auth ---
 def add_to_google_sheets(data_row):
     try:
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        # Define the scope
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive"
+        ]
+        
+        # Load credentials from Streamlit Secrets
         creds_dict = st.secrets["gcp_service_account"]
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        
+        # Create credentials object using the new library
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        
+        # Authorize gspread
         client = gspread.authorize(creds)
+        
+        # Open the sheet
         sheet = client.open(SHEET_NAME).sheet1
+        
+        # Append the row
         sheet.append_row(data_row)
         return True
+        
     except Exception as e:
+        # If the error is literally "200" (Success), ignore it and say it worked.
+        error_str = str(e)
+        if "<Response [200]>" in error_str:
+            return True
+            
         st.error(f"System Error: {e}")
         return False
 
@@ -157,8 +172,8 @@ c1, c2, c3 = st.columns([1, 2, 1])
 
 with c2:
     try:
-        # Centering the logo using columns padding
-        st.image(LOGO_PATH, use_container_width=True)
+        # Use width instead of use_container_width for the logo
+        st.image(LOGO_PATH, width=500)
     except:
         pass
     
@@ -168,20 +183,21 @@ with c2:
                 Unearth Your <span style="background: linear-gradient(to right, #FFD700, #C5A059); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Future</span>
             </h1>
             <p style="font-size: 1.2rem; opacity: 0.8; font-weight: 300;">
-                The Official Student Chapter of UWA Australian Institute of Mining and Metallurgy
+                The Official Student Chapter of UWA Mining
             </p>
         </div>
     """, unsafe_allow_html=True)
 
 # 2. The "Glass" Content Area
-# We use a 1-2-1 ratio to keep the form readable in the middle, framed by the GIFs
 col_left, col_center, col_right = st.columns([1, 2, 1], gap="large")
 
 with col_left:
-    st.image(SIDE_IMG_LEFT, use_container_width=True)
+    # FIX: Replaced use_container_width with width="stretch"
+    st.image(SIDE_IMG_LEFT, width="stretch")
 
 with col_right:
-    st.image(SIDE_IMG_RIGHT, use_container_width=True)
+    # FIX: Replaced use_container_width with width="stretch"
+    st.image(SIDE_IMG_RIGHT, width="stretch")
 
 with col_center:
     # THE FORM CARD
@@ -239,4 +255,3 @@ with col_center:
                 if success:
                     st.balloons()
                     st.success(f"Welcome aboard, {name}. Your application is confirmed.")
-
