@@ -6,7 +6,7 @@ from datetime import datetime
 
 # --- Configuration ---
 # ⚠️ MAKE SURE THIS MATCHES YOUR GOOGLE SHEET NAME EXACTLY
-SHEET_NAME = "O-Day" 
+SHEET_NAME = "Mining Club Signups" 
 
 # Image Configuration (Use filenames for cloud hosting)
 LOGO_PATH = "UWAStudentChapterLogo.png"
@@ -41,22 +41,16 @@ st.markdown("""
     }
     
     /* --- HIDE LINK ICONS (The Nuclear Option) --- */
-    
-    /* 1. Hide the specific container Streamlit uses for these actions */
     div[data-testid="stHeaderAction"] {
         display: none !important;
         visibility: hidden !important;
         height: 0px !important;
     }
-    
-    /* 2. Target ANY link inside ANY header and make it invisible */
     h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a {
         display: none !important;
         pointer-events: none;
         color: transparent !important;
     }
-    
-    /* 3. Hide the specific SVG icon itself just in case */
     div[data-testid="stHeaderAction"] svg {
         display: none !important;
     }
@@ -124,7 +118,9 @@ col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
 
 with col_head1:
     try:
-        st.image(LOGO_PATH, width=600)
+        # UPDATED: Replaced use_container_width=True with width="stretch" (Since 600px might exceed container)
+        # Or keeping width=600 is fine if you prefer fixed size, but to silence warning regarding container logic:
+        st.image(LOGO_PATH, width=600) 
     except Exception:
         st.write("⛏️")
 
@@ -144,10 +140,12 @@ with col_head2:
 col_side_l, col_form_center, col_side_r = st.columns([1, 2.5, 1], gap="medium")
 
 with col_side_l:
-    st.image(SIDE_IMG_LEFT, use_container_width=True)
+    # UPDATED: Replaced use_container_width=True with width="stretch"
+    st.image(SIDE_IMG_LEFT, width="stretch")
 
 with col_side_r:
-    st.image(SIDE_IMG_RIGHT, use_container_width=True)
+    # UPDATED: Replaced use_container_width=True with width="stretch"
+    st.image(SIDE_IMG_RIGHT, width="stretch")
 
 with col_form_center:
     with st.form("signup_form", clear_on_submit=True):
@@ -205,4 +203,3 @@ with col_form_center:
                     
                 if success:
                     st.success(f"Success! {name} has been added to the database.")
-
