@@ -28,67 +28,62 @@ st.markdown("""
     <style>
     /* --- SOPHISTICATED ROYAL BLUE BACKGROUND --- */
     .stApp {
-        /* A deep, rich gradient from Royal Blue to Dark Navy */
         background: linear-gradient(180deg, #0f204b 0%, #000c24 100%);
         background-attachment: fixed;
     }
     
-    /* Global Text Styles - Clean & Elegant */
+    /* Global Text Styles */
     h1, h2, h3, h4, h5, h6, .stRadio label, div.stMarkdown, p {
         color: #ffffff !important;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
-    /* --- 🚫 NUCLEAR FIX FOR IMAGE ICONS 🚫 --- */
+    /* --- 🚫 HIDE BOTTOM ICONS & FOOTER 🚫 --- */
     
-    /* 1. Target ANY button inside an image container */
+    /* 1. Hide the "Made with Streamlit" text */
+    footer {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 2. Hide the "Manage App" button (Bottom Right) */
+    .stAppDeployButton {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 3. Hide the Viewer Badge / Avatar (Bottom Right) */
+    .viewerBadge_container__1QSob {
+        display: none !important;
+    }
+
+    /* --- HIDE IMAGE FULLSCREEN BUTTONS --- */
     [data-testid="stImage"] button {
         display: none !important;
         visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
         width: 0 !important;
         height: 0 !important;
     }
-    
-    /* 2. Target the specific 'View Fullscreen' title attribute */
-    button[title="View fullscreen"] {
-        display: none !important;
-    }
-    
-    /* 3. Hide the styled container if Streamlit changes the button tag */
-    [data-testid="StyledFullScreenButton"] {
-        display: none !important;
-    }
+    button[title="View fullscreen"] { display: none !important; }
 
     /* --- HIDE OTHER UI ELEMENTS --- */
     [data-testid="stHeaderAction"] { display: none !important; }
     h1 a, h2 a, h3 a { display: none !important; color: transparent !important; pointer-events: none; }
     header[data-testid="stHeader"] { display: none !important; }
-    footer { display: none !important; }
-    .viewerBadge_container__1QSob { display: none !important; }
-    .stAppDeployButton { display: none !important; }
     [data-testid="stDecoration"] { display: none !important; }
-    [data-testid="stStatusWidget"] { display: none !important; }
 
     /* --- FORM STYLING --- */
-    
-    /* Input Fields */
     .stTextInput input {
         color: #000000;
         background-color: #f0f2f6;
         border-radius: 5px;
         border: 1px solid #d1d5db;
     }
-    
-    /* Radio Button Text */
-    .stRadio label {
-        font-size: 1rem;
-    }
+    .stRadio label { font-size: 1rem; }
     
     /* Submit Button - Gold Accent */
     .stButton > button {
-        background-color: #C5A059; /* Muted Gold/Bronze */
+        background-color: #C5A059;
         color: #000000;
         border-radius: 5px;
         height: 3em;
@@ -101,7 +96,7 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .stButton > button:hover {
-        background-color: #E6B86A; /* Lighter Gold on hover */
+        background-color: #E6B86A;
         transform: translateY(-2px);
         box-shadow: 0 6px 8px rgba(0,0,0,0.3);
         color: #000000;
@@ -112,10 +107,7 @@ st.markdown("""
         padding-top: 50px !important; 
         padding-bottom: 2rem;
     }
-    
-    .stVerticalBlock {
-        gap: 0rem !important;
-    }
+    .stVerticalBlock { gap: 0rem !important; }
     
     </style>
     """, unsafe_allow_html=True)
