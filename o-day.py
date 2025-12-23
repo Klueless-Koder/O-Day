@@ -8,7 +8,7 @@ from datetime import datetime
 # ⚠️ MAKE SURE THIS MATCHES YOUR GOOGLE SHEET NAME EXACTLY
 SHEET_NAME = "Mining Club Signups" 
 
-# Image Configuration (Use filenames for cloud hosting)
+# Image Configuration
 LOGO_PATH = "UWAStudentChapterLogo.png"
 SIDE_IMG_LEFT = "guy-mining-diamonds-but-actually-just-dirt.gif"
 SIDE_IMG_RIGHT = "zoolander-miner-walk-zoolander.gif"
@@ -40,21 +40,29 @@ st.markdown("""
         font-family: 'Helvetica', sans-serif;
     }
     
-    /* --- HIDE LINK ICONS (The Nuclear Option) --- */
-    div[data-testid="stHeaderAction"] {
+    /* --- HIDE LINK ICONS (SUPER NUCLEAR FIX) --- */
+    
+    /* 1. Kill the container Streamlit uses for header actions */
+    [data-testid="stHeaderAction"] {
         display: none !important;
         visibility: hidden !important;
-        height: 0px !important;
-    }
-    h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a {
-        display: none !important;
-        pointer-events: none;
-        color: transparent !important;
-    }
-    div[data-testid="stHeaderAction"] svg {
-        display: none !important;
+        opacity: 0 !important;
     }
 
+    /* 2. Target any anchor link inside any header level */
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        cursor: default !important;
+        text-decoration: none !important;
+    }
+
+    /* 3. Just in case, target the SVG inside the anchor */
+    h1 a svg, h2 a svg, h3 a svg {
+        display: none !important;
+    }
+    
     /* Input Fields styling */
     .stTextInput input {
         color: #000000;
@@ -81,7 +89,7 @@ st.markdown("""
         transform: scale(1.02);
     }
     
-    /* --- VERTICAL SPACING FIX (200px) --- */
+    /* --- VERTICAL SPACING FIX --- */
     .block-container {
         padding-top: 200px !important;
         padding-bottom: 2rem;
@@ -97,16 +105,11 @@ st.markdown("""
 # --- Google Sheets Connection Function ---
 def add_to_google_sheets(data_row):
     try:
-        # Load credentials from Streamlit Secrets
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         creds_dict = st.secrets["gcp_service_account"]
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-        
-        # Authorize and open sheet
         client = gspread.authorize(creds)
         sheet = client.open(SHEET_NAME).sheet1
-        
-        # Append the row
         sheet.append_row(data_row)
         return True
     except Exception as e:
@@ -118,8 +121,6 @@ col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
 
 with col_head1:
     try:
-        # UPDATED: Replaced use_container_width=True with width="stretch" (Since 600px might exceed container)
-        # Or keeping width=600 is fine if you prefer fixed size, but to silence warning regarding container logic:
         st.image(LOGO_PATH, width=600) 
     except Exception:
         st.write("⛏️")
@@ -140,11 +141,9 @@ with col_head2:
 col_side_l, col_form_center, col_side_r = st.columns([1, 2.5, 1], gap="medium")
 
 with col_side_l:
-    # UPDATED: Replaced use_container_width=True with width="stretch"
     st.image(SIDE_IMG_LEFT, width="stretch")
 
 with col_side_r:
-    # UPDATED: Replaced use_container_width=True with width="stretch"
     st.image(SIDE_IMG_RIGHT, width="stretch")
 
 with col_form_center:
@@ -195,7 +194,6 @@ with col_form_center:
             # --- Save to Google Sheets ---
             if not has_error:
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                # Prepare the row as a list
                 row_data = [name, clean_s_num, facebook, final_degree, timestamp]
                 
                 with st.spinner("Saving to cloud..."):
