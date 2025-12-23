@@ -39,21 +39,31 @@ st.markdown("""
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
-    /* --- HIDE UGLY UI ELEMENTS --- */
+    /* --- 🚫 NUCLEAR FIX FOR IMAGE ICONS 🚫 --- */
     
-    /* 1. Hide Image Fullscreen Buttons (The arrows at top right of images) */
+    /* 1. Target ANY button inside an image container */
+    [data-testid="stImage"] button {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    
+    /* 2. Target the specific 'View Fullscreen' title attribute */
     button[title="View fullscreen"] {
         display: none !important;
     }
+    
+    /* 3. Hide the styled container if Streamlit changes the button tag */
     [data-testid="StyledFullScreenButton"] {
         display: none !important;
     }
-    
-    /* 2. Hide Link Icons (The chain icons next to text) */
+
+    /* --- HIDE OTHER UI ELEMENTS --- */
     [data-testid="stHeaderAction"] { display: none !important; }
     h1 a, h2 a, h3 a { display: none !important; color: transparent !important; pointer-events: none; }
-    
-    /* 3. Hide Top Header/Toolbar & Footer */
     header[data-testid="stHeader"] { display: none !important; }
     footer { display: none !important; }
     .viewerBadge_container__1QSob { display: none !important; }
@@ -63,7 +73,7 @@ st.markdown("""
 
     /* --- FORM STYLING --- */
     
-    /* Input Fields - crisp white with dark text */
+    /* Input Fields */
     .stTextInput input {
         color: #000000;
         background-color: #f0f2f6;
@@ -76,7 +86,7 @@ st.markdown("""
         font-size: 1rem;
     }
     
-    /* Submit Button - Gold Accent for "Premium" feel */
+    /* Submit Button - Gold Accent */
     .stButton > button {
         background-color: #C5A059; /* Muted Gold/Bronze */
         color: #000000;
@@ -129,7 +139,6 @@ col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
 
 with col_head1:
     try:
-        # width="600" is still safest for the logo to ensure it doesn't get huge
         st.image(LOGO_PATH, width=600) 
     except Exception:
         st.write("⛏️")
