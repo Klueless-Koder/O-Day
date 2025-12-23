@@ -38,39 +38,46 @@ st.markdown("""
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
-    /* --- 🚫 HIDE BOTTOM ICONS & FOOTER 🚫 --- */
+    /* --- 🚫 HIDDEN ELEMENTS (NUCLEAR OPTION) 🚫 --- */
     
-    /* 1. Hide the "Made with Streamlit" text */
-    footer {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 2. Hide the "Manage App" button (Bottom Right) */
-    .stAppDeployButton {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 3. Hide the Viewer Badge / Avatar (Bottom Right) */
+    /* 1. Hide the Bottom Right "Viewer Badge" (Your Account Button) */
     .viewerBadge_container__1QSob {
         display: none !important;
     }
+    
+    /* 2. Hide the "Made with Streamlit" Footer */
+    footer {
+        visibility: hidden !important;
+    }
+    
+    /* 3. Hide the Hamburger Menu (Top Right) */
+    #MainMenu {
+        visibility: hidden !important;
+    }
+    
+    /* 4. Hide the "Deploy" / "Manage App" Button */
+    .stDeployButton {
+        display: none !important;
+    }
+    [data-testid="stAppDeployButton"] {
+        display: none !important;
+    }
+    
+    /* 5. Hide the Top Header Bar entirely */
+    header {
+        visibility: hidden !important;
+    }
+    [data-testid="stHeader"] {
+        display: none !important;
+    }
 
-    /* --- HIDE IMAGE FULLSCREEN BUTTONS --- */
+    /* 6. Hide Fullscreen Buttons on Images */
     [data-testid="stImage"] button {
         display: none !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
     }
-    button[title="View fullscreen"] { display: none !important; }
-
-    /* --- HIDE OTHER UI ELEMENTS --- */
-    [data-testid="stHeaderAction"] { display: none !important; }
-    h1 a, h2 a, h3 a { display: none !important; color: transparent !important; pointer-events: none; }
-    header[data-testid="stHeader"] { display: none !important; }
-    [data-testid="stDecoration"] { display: none !important; }
+    button[title="View fullscreen"] {
+        display: none !important;
+    }
 
     /* --- FORM STYLING --- */
     .stTextInput input {
