@@ -38,44 +38,49 @@ st.markdown("""
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
-    /* --- 🚫 HIDDEN ELEMENTS (NUCLEAR OPTION) 🚫 --- */
+    /* --- 🚫 THE FOOTER KILLER (Hide "Made with Streamlit") 🚫 --- */
     
-    /* 1. Hide the Bottom Right "Viewer Badge" (Your Account Button) */
+    /* 1. Target the main footer container */
+    footer {
+        visibility: hidden !important;
+        display: none !important;
+        height: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+    
+    /* 2. Target the footer by its test ID (Streamlit's internal name) */
+    [data-testid="stFooter"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 3. Hide the 'Viewer Badge' (Bottom right user profile/menu) */
     .viewerBadge_container__1QSob {
         display: none !important;
     }
     
-    /* 2. Hide the "Made with Streamlit" Footer */
-    footer {
-        visibility: hidden !important;
-    }
-    
-    /* 3. Hide the Hamburger Menu (Top Right) */
-    #MainMenu {
-        visibility: hidden !important;
-    }
-    
-    /* 4. Hide the "Deploy" / "Manage App" Button */
-    .stDeployButton {
-        display: none !important;
-    }
-    [data-testid="stAppDeployButton"] {
-        display: none !important;
-    }
-    
-    /* 5. Hide the Top Header Bar entirely */
-    header {
-        visibility: hidden !important;
-    }
-    [data-testid="stHeader"] {
+    /* 4. Hide the top decoration ribbon (The colored line at the top) */
+    [data-testid="stDecoration"] {
         display: none !important;
     }
 
-    /* 6. Hide Fullscreen Buttons on Images */
+    /* 5. Hide the Hamburger Menu & Top Header */
+    [data-testid="stHeader"] {
+        display: none !important;
+    }
+    #MainMenu {
+        visibility: hidden !important;
+    }
+
+    /* --- HIDE IMAGE ICONS (Arrows & Fullscreen) --- */
     [data-testid="stImage"] button {
         display: none !important;
     }
     button[title="View fullscreen"] {
+        display: none !important;
+    }
+    [data-testid="StyledFullScreenButton"] {
         display: none !important;
     }
 
