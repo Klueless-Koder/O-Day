@@ -30,21 +30,44 @@ st.set_page_config(page_title="UWA Mining Club", page_icon="⛏️", layout="wid
 st.markdown("""
     <style>
     /* Main Background - Dark Navy */
-    .stApp { background-color: #001f3f; }
+    .stApp {
+        background-color: #001f3f;
+    }
     
-    /* Text Styles */
+    /* Global Text Styles */
     h1, h2, h3, h4, h5, h6, .stRadio label, div.stMarkdown, p {
         color: #ffffff !important;
         font-family: 'Helvetica', sans-serif;
     }
     
-    /* Hide Link Icons */
-    [data-testid="stHeaderAction"] { display: none !important; }
+    /* --- HIDE LINK ICONS (The Nuclear Option) --- */
     
-    /* Input Fields */
-    .stTextInput input { color: #000000; background-color: #ffffff; }
+    /* 1. Hide the specific container Streamlit uses for these actions */
+    div[data-testid="stHeaderAction"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }
     
-    /* Button Styles */
+    /* 2. Target ANY link inside ANY header and make it invisible */
+    h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a {
+        display: none !important;
+        pointer-events: none;
+        color: transparent !important;
+    }
+    
+    /* 3. Hide the specific SVG icon itself just in case */
+    div[data-testid="stHeaderAction"] svg {
+        display: none !important;
+    }
+
+    /* Input Fields styling */
+    .stTextInput input {
+        color: #000000;
+        background-color: #ffffff;
+    }
+    
+    /* Submit Button Styling */
     .stButton > button {
         background-color: #0074D9;
         color: white;
@@ -55,16 +78,25 @@ st.markdown("""
         font-size: 1.2rem;
         margin-top: 10px;
         border: 2px solid #0074D9;
+        transition: all 0.3s ease;
     }
     .stButton > button:hover {
         background-color: #39CCCC;
         border-color: #39CCCC;
         color: #001f3f;
+        transform: scale(1.02);
     }
     
-    /* Spacing Fixes */
-    .block-container { padding-top: 200px !important; padding-bottom: 2rem; }
-    .stVerticalBlock { gap: 0rem !important; }
+    /* --- VERTICAL SPACING FIX (200px) --- */
+    .block-container {
+        padding-top: 200px !important;
+        padding-bottom: 2rem;
+    }
+    
+    .stVerticalBlock {
+        gap: 0rem !important;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -173,3 +205,4 @@ with col_form_center:
                     
                 if success:
                     st.success(f"Success! {name} has been added to the database.")
+
