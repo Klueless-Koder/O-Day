@@ -36,11 +36,11 @@ st.markdown("""
         color: #ffffff !important;
         font-family: 'Helvetica', sans-serif;
     }
+
+    /* --- 🚫 HIDDEN ELEMENTS SECTION 🚫 --- */
     
-    /* --- HIDE STREAMLIT BRANDING (The Stealth Fix) --- */
-    
-    /* 1. Hide the Top Toolbar (Hamburger menu, GitHub icon, etc.) */
-    [data-testid="stHeader"] {
+    /* 1. Hide the Top Header/Toolbar (Hamburger menu, etc.) */
+    header[data-testid="stHeader"] {
         display: none !important;
         visibility: hidden !important;
     }
@@ -51,15 +51,31 @@ st.markdown("""
         visibility: hidden !important;
     }
     
-    /* 3. Hide any decoration bars at the top */
-    header {
+    /* 3. Hide the Bottom Right "Viewer Badge" / User Profile */
+    .viewerBadge_container__1QSob {
         display: none !important;
-        visibility: hidden !important;
+    }
+    
+    /* 4. Hide the "Manage App" button (often appears for owners) */
+    .stAppDeployButton {
+        display: none !important;
+    }
+    
+    /* 5. Hide the colorful decoration bar at the very top */
+    [data-testid="stDecoration"] {
+        display: none !important;
+    }
+    
+    /* 6. Hide the "Status" widget (running man icon) */
+    [data-testid="stStatusWidget"] {
+        display: none !important;
     }
 
-    /* --- HIDE LINK ICONS --- */
+    /* 7. Hide Link Icons (The persistent ones) */
     [data-testid="stHeaderAction"] { display: none !important; }
-    h1 a, h2 a, h3 a { display: none !important; pointer-events: none; color: transparent !important; }
+    h1 a, h2 a, h3 a { display: none !important; color: transparent !important; pointer-events: none; }
+
+    /* --- END HIDDEN ELEMENTS --- */
 
     /* Input Fields styling */
     .stTextInput input {
@@ -88,9 +104,9 @@ st.markdown("""
     }
     
     /* --- VERTICAL SPACING FIX --- */
-    /* Since we hid the header, we might need less padding at the top now */
+    /* Adjusted padding now that the header is gone */
     .block-container {
-        padding-top: 100px !important; 
+        padding-top: 50px !important; 
         padding-bottom: 2rem;
     }
     
