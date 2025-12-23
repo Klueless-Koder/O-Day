@@ -1,17 +1,14 @@
 import streamlit as st
 import pandas as pd
-import os
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # --- Configuration ---
-# --- Configuration ---
-FILE_NAME = "open_day_signups.csv"
+# ⚠️ MAKE SURE THIS MATCHES YOUR GOOGLE SHEET NAME EXACTLY
+SHEET_NAME = "O-Day" 
 
-# OLD WAY (Will Crash Online):
-# LOGO_PATH = r"C:\Users\jdvan\OneDrive...\UWAStudentChapterLogo.png"
-
-# NEW WAY (Works Online):
-# Ensure the files are uploaded to the main folder of your GitHub repo
+# Image Configuration (Use filenames for cloud hosting)
 LOGO_PATH = "UWAStudentChapterLogo.png"
 SIDE_IMG_LEFT = "guy-mining-diamonds-but-actually-just-dirt.gif"
 SIDE_IMG_RIGHT = "zoolander-miner-walk-zoolander.gif"
@@ -33,41 +30,21 @@ st.set_page_config(page_title="UWA Mining Club", page_icon="⛏️", layout="wid
 st.markdown("""
     <style>
     /* Main Background - Dark Navy */
-    .stApp {
-        background-color: #001f3f;
-    }
+    .stApp { background-color: #001f3f; }
     
-    /* Global Text Styles */
+    /* Text Styles */
     h1, h2, h3, h4, h5, h6, .stRadio label, div.stMarkdown, p {
         color: #ffffff !important;
         font-family: 'Helvetica', sans-serif;
     }
     
-    /* --- HIDE LINK ICONS (The Aggressive Fix) --- */
-    /* Target the specific anchor tag class used by Streamlit */
-    a.st-emotion-cache-1plm331, .st-emotion-cache-1plm331 {
-        display: none !important;
-        pointer-events: none;
-    }
-    /* Catch-all for any anchor inside a header */
-    h1 a, h2 a, h3 a {
-        display: none !important;
-        opacity: 0 !important;
-        pointer-events: none;
-    }
-    /* Hide the container wrapper if it exists */
-    [data-testid="stHeaderAction"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
+    /* Hide Link Icons */
+    [data-testid="stHeaderAction"] { display: none !important; }
     
-    /* Input Fields styling */
-    .stTextInput input {
-        color: #000000;
-        background-color: #ffffff;
-    }
+    /* Input Fields */
+    .stTextInput input { color: #000000; background-color: #ffffff; }
     
-    /* Submit Button Styling */
+    /* Button Styles */
     .stButton > button {
         background-color: #0074D9;
         color: white;
@@ -78,27 +55,37 @@ st.markdown("""
         font-size: 1.2rem;
         margin-top: 10px;
         border: 2px solid #0074D9;
-        transition: all 0.3s ease;
     }
     .stButton > button:hover {
         background-color: #39CCCC;
         border-color: #39CCCC;
         color: #001f3f;
-        transform: scale(1.02);
     }
     
-    /* --- VERTICAL SPACING FIX (200px) --- */
-    .block-container {
-        padding-top: 200px !important;
-        padding-bottom: 2rem;
-    }
-    
-    .stVerticalBlock {
-        gap: 0rem !important;
-    }
-    
+    /* Spacing Fixes */
+    .block-container { padding-top: 200px !important; padding-bottom: 2rem; }
+    .stVerticalBlock { gap: 0rem !important; }
     </style>
     """, unsafe_allow_html=True)
+
+# --- Google Sheets Connection Function ---
+def add_to_google_sheets(data_row):
+    try:
+        # Load credentials from Streamlit Secrets
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        creds_dict = st.secrets["gcp_service_account"]
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        
+        # Authorize and open sheet
+        client = gspread.authorize(creds)
+        sheet = client.open(SHEET_NAME).sheet1
+        
+        # Append the row
+        sheet.append_row(data_row)
+        return True
+    except Exception as e:
+        st.error(f"Google Sheets Error: {e}")
+        return False
 
 # --- Header Section ---
 col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
@@ -110,7 +97,6 @@ with col_head1:
         st.write("⛏️")
 
 with col_head2:
-    # --- MARKETING TITLE ---
     st.markdown("""
         <div style="text-align: left;">
             <h1 style="font-size: 3.5rem; margin-bottom: 0px; line-height: 1.1;">
@@ -122,18 +108,15 @@ with col_head2:
         </div>
     """, unsafe_allow_html=True)
 
-# --- Main Content Layout ---
+# --- Main Form Layout ---
 col_side_l, col_form_center, col_side_r = st.columns([1, 2.5, 1], gap="medium")
 
-# --- Left Sidebar Image ---
 with col_side_l:
     st.image(SIDE_IMG_LEFT, use_container_width=True)
 
-# --- Right Sidebar Image ---
 with col_side_r:
     st.image(SIDE_IMG_RIGHT, use_container_width=True)
 
-# --- Central Form Area ---
 with col_form_center:
     with st.form("signup_form", clear_on_submit=True):
         c1, c2 = st.columns(2, gap="small")
@@ -156,7 +139,7 @@ with col_form_center:
         submitted = st.form_submit_button("Submit Application ➤")
 
         if submitted:
-            # --- Validation Logic ---
+            # --- Validation ---
             has_error = False
             if not name.strip():
                 st.error("⚠️ Missing Full Name.")
@@ -179,21 +162,14 @@ with col_form_center:
                 else:
                     final_degree = other_degree_input
 
-            # --- Save Data ---
+            # --- Save to Google Sheets ---
             if not has_error:
-                new_data = {
-                    "Name": [name],
-                    "Student Number": [clean_s_num],
-                    "Facebook": [facebook],
-                    "Degree": [final_degree],
-                    "Timestamp": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
-                }
-                df_new = pd.DataFrame(new_data)
-
-                if not os.path.isfile(FILE_NAME):
-                    df_new.to_csv(FILE_NAME, index=False)
-                else:
-                    df_new.to_csv(FILE_NAME, mode='a', header=False, index=False)
-
-
-                st.success(f"Success! {name} added.")
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                # Prepare the row as a list
+                row_data = [name, clean_s_num, facebook, final_degree, timestamp]
+                
+                with st.spinner("Saving to cloud..."):
+                    success = add_to_google_sheets(row_data)
+                    
+                if success:
+                    st.success(f"Success! {name} has been added to the database.")
