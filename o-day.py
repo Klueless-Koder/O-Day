@@ -168,7 +168,7 @@ with c2:
                 Unearth Your <span style="background: linear-gradient(to right, #FFD700, #C5A059); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Future</span>
             </h1>
             <p style="font-size: 1.2rem; opacity: 0.8; font-weight: 300;">
-                The Official Student Chapter of UWA Mining
+                The Official Student Chapter of UWA Australian Institute of Mining and Metallurgy
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -239,3 +239,4 @@ with col_center:
                 if success:
                     st.balloons()
                     st.success(f"Welcome aboard, {name}. Your application is confirmed.")
+
