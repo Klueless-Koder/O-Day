@@ -26,85 +26,78 @@ st.set_page_config(page_title="UWA Mining Club", page_icon="⛏️", layout="wid
 
 st.markdown("""
     <style>
-    /* Main Background - Dark Navy */
+    /* --- SOPHISTICATED ROYAL BLUE BACKGROUND --- */
     .stApp {
-        background-color: #001f3f;
+        /* A deep, rich gradient from Royal Blue to Dark Navy */
+        background: linear-gradient(180deg, #0f204b 0%, #000c24 100%);
+        background-attachment: fixed;
     }
     
-    /* Global Text Styles */
+    /* Global Text Styles - Clean & Elegant */
     h1, h2, h3, h4, h5, h6, .stRadio label, div.stMarkdown, p {
         color: #ffffff !important;
-        font-family: 'Helvetica', sans-serif;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
-    /* --- 🚫 HIDDEN ELEMENTS SECTION 🚫 --- */
+    /* --- HIDE UGLY UI ELEMENTS --- */
     
-    /* 1. Hide the Top Header/Toolbar (Hamburger menu, etc.) */
-    header[data-testid="stHeader"] {
+    /* 1. Hide Image Fullscreen Buttons (The arrows at top right of images) */
+    button[title="View fullscreen"] {
         display: none !important;
-        visibility: hidden !important;
     }
-    
-    /* 2. Hide the "Made with Streamlit" Footer */
-    footer {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 3. Hide the Bottom Right "Viewer Badge" / User Profile */
-    .viewerBadge_container__1QSob {
+    [data-testid="StyledFullScreenButton"] {
         display: none !important;
     }
     
-    /* 4. Hide the "Manage App" button (often appears for owners) */
-    .stAppDeployButton {
-        display: none !important;
-    }
-    
-    /* 5. Hide the colorful decoration bar at the very top */
-    [data-testid="stDecoration"] {
-        display: none !important;
-    }
-    
-    /* 6. Hide the "Status" widget (running man icon) */
-    [data-testid="stStatusWidget"] {
-        display: none !important;
-    }
-
-    /* 7. Hide Link Icons (The persistent ones) */
+    /* 2. Hide Link Icons (The chain icons next to text) */
     [data-testid="stHeaderAction"] { display: none !important; }
     h1 a, h2 a, h3 a { display: none !important; color: transparent !important; pointer-events: none; }
+    
+    /* 3. Hide Top Header/Toolbar & Footer */
+    header[data-testid="stHeader"] { display: none !important; }
+    footer { display: none !important; }
+    .viewerBadge_container__1QSob { display: none !important; }
+    .stAppDeployButton { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    [data-testid="stStatusWidget"] { display: none !important; }
 
-    /* --- END HIDDEN ELEMENTS --- */
-
-    /* Input Fields styling */
+    /* --- FORM STYLING --- */
+    
+    /* Input Fields - crisp white with dark text */
     .stTextInput input {
         color: #000000;
-        background-color: #ffffff;
+        background-color: #f0f2f6;
+        border-radius: 5px;
+        border: 1px solid #d1d5db;
     }
     
-    /* Submit Button Styling */
+    /* Radio Button Text */
+    .stRadio label {
+        font-size: 1rem;
+    }
+    
+    /* Submit Button - Gold Accent for "Premium" feel */
     .stButton > button {
-        background-color: #0074D9;
-        color: white;
+        background-color: #C5A059; /* Muted Gold/Bronze */
+        color: #000000;
         border-radius: 5px;
         height: 3em;
         width: 100%;
         font-weight: bold;
         font-size: 1.2rem;
-        margin-top: 10px;
-        border: 2px solid #0074D9;
+        margin-top: 15px;
+        border: none;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .stButton > button:hover {
-        background-color: #39CCCC;
-        border-color: #39CCCC;
-        color: #001f3f;
-        transform: scale(1.02);
+        background-color: #E6B86A; /* Lighter Gold on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        color: #000000;
     }
     
-    /* --- VERTICAL SPACING FIX --- */
-    /* Adjusted padding now that the header is gone */
+    /* --- LAYOUT ADJUSTMENTS --- */
     .block-container {
         padding-top: 50px !important; 
         padding-bottom: 2rem;
@@ -136,6 +129,7 @@ col_head1, col_head2 = st.columns([0.6, 1.4], vertical_alignment="center")
 
 with col_head1:
     try:
+        # width="600" is still safest for the logo to ensure it doesn't get huge
         st.image(LOGO_PATH, width=600) 
     except Exception:
         st.write("⛏️")
@@ -143,11 +137,11 @@ with col_head1:
 with col_head2:
     st.markdown("""
         <div style="text-align: left;">
-            <h1 style="font-size: 3.5rem; margin-bottom: 0px; line-height: 1.1;">
-                Unearth Your <span style="color: #FFD700;">Future.</span>
+            <h1 style="font-size: 3.5rem; margin-bottom: 0px; line-height: 1.1; font-weight: 700;">
+                Unearth Your <span style="color: #C5A059;">Future.</span>
             </h1>
-            <h3 style="font-size: 1.8rem; font-weight: 300; color: #DDDDDD; margin-top: 5px;">
-                Join the UWA Mining Club Today
+            <h3 style="font-size: 1.8rem; font-weight: 300; color: #E0E0E0; margin-top: 5px; letter-spacing: 1px;">
+                Join the UWA Mining Club
             </h3>
         </div>
     """, unsafe_allow_html=True)
