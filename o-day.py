@@ -5,10 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # --- Configuration ---
-# ⚠️ MAKE SURE THIS MATCHES YOUR GOOGLE SHEET NAME EXACTLY
 SHEET_NAME = "Mining Club Signups" 
-
-# Image Configuration
 LOGO_PATH = "UWAStudentChapterLogo.png"
 SIDE_IMG_LEFT = "guy-mining-diamonds-but-actually-just-dirt.gif"
 SIDE_IMG_RIGHT = "zoolander-miner-walk-zoolander.gif"
@@ -40,29 +37,30 @@ st.markdown("""
         font-family: 'Helvetica', sans-serif;
     }
     
-    /* --- HIDE LINK ICONS (SUPER NUCLEAR FIX) --- */
+    /* --- HIDE STREAMLIT BRANDING (The Stealth Fix) --- */
     
-    /* 1. Kill the container Streamlit uses for header actions */
-    [data-testid="stHeaderAction"] {
+    /* 1. Hide the Top Toolbar (Hamburger menu, GitHub icon, etc.) */
+    [data-testid="stHeader"] {
         display: none !important;
         visibility: hidden !important;
-        opacity: 0 !important;
-    }
-
-    /* 2. Target any anchor link inside any header level */
-    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-        display: none !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        cursor: default !important;
-        text-decoration: none !important;
-    }
-
-    /* 3. Just in case, target the SVG inside the anchor */
-    h1 a svg, h2 a svg, h3 a svg {
-        display: none !important;
     }
     
+    /* 2. Hide the "Made with Streamlit" Footer */
+    footer {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 3. Hide any decoration bars at the top */
+    header {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* --- HIDE LINK ICONS --- */
+    [data-testid="stHeaderAction"] { display: none !important; }
+    h1 a, h2 a, h3 a { display: none !important; pointer-events: none; color: transparent !important; }
+
     /* Input Fields styling */
     .stTextInput input {
         color: #000000;
@@ -90,8 +88,9 @@ st.markdown("""
     }
     
     /* --- VERTICAL SPACING FIX --- */
+    /* Since we hid the header, we might need less padding at the top now */
     .block-container {
-        padding-top: 200px !important;
+        padding-top: 100px !important; 
         padding-bottom: 2rem;
     }
     
